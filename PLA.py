@@ -16,8 +16,10 @@ for i in range(0,len(data1)):
     data1[i,0]=random.uniform(-1,1)
     data1[i,1]=random.uniform(-1,1)
     if (data1[i,0]-0.2>data1[i,1]):
+        a=i
         data1[i,2]=1
     else:
+        b=i
         data1[i,2]=-1
 #-------------------------------------------------------------------------------
 #data plotting
@@ -28,6 +30,9 @@ for i in range(0,len(data1)):
         plt.plot(data1[i,0],data1[i,1],'*b')
     else:
         plt.plot(data1[i,0],data1[i,1],'or')
+
+plt.plot(data1[a,0],data1[a,1],'*b', label='y=1 points')
+plt.plot(data1[b,0],data1[b,1],'or', label='y=-1 points')
 
 
 def misclassified(data,w):
@@ -52,10 +57,11 @@ def misclassified(data,w):
     if(break_point == 1):
         point=random.randint(1,len(misclassify))
         a=int(misclassify[point-1])
-        print(misclassify)
-        print(len(misclassify),'misclassify number')
-        length=len(misclassify)
+        #print("Misclas. pts:",misclassify)
+    print("Misclas. pts count",len(misclassify))
+    length=len(misclassify)
     return a,break_point,length
+
 
 X=np.column_stack((np.ones(len(data1),dtype=int),data1[:,0],data1[:,1]))
 
@@ -66,10 +72,11 @@ w=np.mat([0.5,0,0])
 
 while(break_point==1):
     count=count+1
-    print(count)
+    print("Iterations count:",count)
     koyal,break_point,length=misclassified(data1,w)
     if(koyal!=-5):
         mis_counter=mis_counter+length
+        #print("Misclas. pts count",mis_counter)
         w_new=np.mat([0,0,0])
         w_new= w + X[koyal,:]*data1[koyal,2]
         #print(w_new)
@@ -86,16 +93,18 @@ while(break_point==1):
         plt.pause(0.01)
 
 mis_avg=mis_counter/(len(data1)*count)
-print('Probability is',mis_avg)
-#plt.show()
+print('Probability of f(x)!=g(x)',mis_avg)
+
 
 m=float(-w_new[0,1]/w_new[0,2])
 c=float(-w_new[0,0]/w_new[0,2])
 x_line1=np.mat([[-1],[1]])
 y_line1=m*x_line1+c
-plt.plot(x_line1,y_line1,'-m')
+plt.plot(x_line1,y_line1,'-y',label='PLA Lines')
+plt.plot(x_line1,y_line1,'-m',label='Best Fit Line')
 plt.xlabel('x')
 plt.ylabel('y')
 plt.axis([-1,1,-1,1])
 plt.title('Data set')
+plt.legend()
 plt.show()
