@@ -129,8 +129,8 @@ def ProbabilityError(target_line_m,target_line_c,hypothesis_line_m,hypothesis_li
 
         Area1=LineLeftArea(Utx,Uty,Dtx,Dty)
         Area2=LineRightArea(Uhx,Uhy,Dhx,Dhy)
-        print(Area1,'ar1')
-        print(Area2,'ar2')
+        #print('Area due to T'Area1)
+        #print(Area2,'ar2')
         Area=abs(4-Area1-Area2)
 
     return Area
@@ -206,7 +206,7 @@ y_line1=m*x_line1+c
 x_linet=x_line1
 y_linet=target_fn_m*x_linet+target_fn_c
 Area=ProbabilityError(target_fn_m,target_fn_c,m,c)
-print(Area/4,'Area')
+print('Probability of f(x)!=g(x)',Area/4)
 
 plt.plot(x_line1,y_line1,'-y',label='PLA Lines')
 plt.plot(x_line1,y_line1,'-m',label='Best Fit Line')
